@@ -2,11 +2,6 @@ from socket import *
 import requests
 import json
 
-# RestService
-
-
-# TCP Socket forbindelse til Client
-
 #Constants
 SERVER_PORT = 12000
 BUFF_SIZE = 1024
@@ -44,27 +39,3 @@ while True:
     #Genstarter forbindelsen
     connectionSocket.close()
     print('connection closed')
-    
-
-    # def handleClient(start):
-    #     if start == START_CUE:
-    #         url = BASE_URL
-    #         try:
-    #             response = requests.get(url)
-    #             print('get request sent to REST')
-    #         except:
-    #             print('OOPS! someshting went wrong')
-    #             response = 'ERROR'
-
-    #         if response == error:
-    #             return
-
-
-    #         if response.status_code == 200:
-    #             data = response.json()
-    #             print('json from REST is loaded')
-
-    #             connectionSocket.send(data.encode())
-    #             print('data sent to client')
-    #         else:
-    #             handleClient(start)

@@ -3,6 +3,7 @@
 from socket import *
 import json
 
+# Constants
 HOST = 'localhost'
 PORT = 12000
 BUFSIZ = 1024
@@ -11,16 +12,13 @@ START_CUE = "start"
 
 tcpCliSock = socket(AF_INET, SOCK_STREAM)
 
-# Lav Drink Metode (Antager at data er en json string med antal ingredienser samt en dict med ingredienser og mængder)
-# Skal kigge på opskrift og bede bruger om at at "fylde glas op" med ingredienserne via pile op og ned
+# Lav drink (data er en json string med ingredienser(inklusiv mængde) og antal ingredienser)
 def lavDrink(data):
-    print("Du skal nu lave en drink med følgende ingredienser:")
+    print("Du skal nu lave en følgende drink:")
     print(data)
 
     keys = list(data['ingredienser'].keys())
     values = list(data['ingredienser'].values())
-    print(keys)
-    print(values)
 
     i = 0
     while i < data['antalIngs']:
@@ -36,29 +34,24 @@ def lavDrink(data):
                 print(f"{actualAmount} ml {keys[i]} i glasset")
 
         i +=1
-    
+
+    print("Drinken er nu klar til at blive serveret, velbekomme!")
 
 # Læs input fra bruger
-# Når input er "start" så sendes forespørgslen til serveren, som svarer med en drinkopskrift
-while True:
-    data = input('Indtast "start" for at starte maskinen:')
-    if not data or not data == START_CUE:
-        break
-
-    tcpCliSock.connect(ADDR)
-    print("Forbindelse oprettet til serveren")
-
-    print("Sender forespørgsel til serveren")
-    tcpCliSock.send(data.encode())
-    data = tcpCliSock.recv(BUFSIZ).decode()
-    if not data:
-        print("Ingen data modtaget")
-        break
-    # json load
-    data = json.loads(data)
-    lavDrink(data)
-    # print("Modtaget data fra serveren, printer data:")
-    # print(data)
+# Hvis input er "start" så sendes forespørgslen til serveren, som svarer med en drinkopskrift
+data = input('Indtast "start" for at starte maskinen:')
+if not data or not data == START_CUE:
+    print("Ugyldigt input")
+tcpCliSock.connect(ADDR)
+print("Forbindelse oprettet til serveren")
+print("Sender forespørgsel til serveren")
+tcpCliSock.send(data.encode())
+data = tcpCliSock.recv(BUFSIZ).decode()
+if not data:
+    print("Ingen data modtaget")
+# json load
+data = json.loads(data)
+lavDrink(data)
 
 print("Forbindelsen lukkes")
 tcpCliSock.close()
