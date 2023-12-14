@@ -3,12 +3,14 @@
 from socket import *
 import json
 
-# Constants
+# Konstanter
 HOST = 'localhost'
 PORT = 12000
 BUFSIZ = 1024
 ADDR = (HOST, PORT)
 START_CUE = "start"
+FILL_CUE = "up"
+FILL_INCREMENT = 50
 
 tcpCliSock = socket(AF_INET, SOCK_STREAM)
 
@@ -28,9 +30,9 @@ def lavDrink(data):
         actualAmount = 0
 
         while actualAmount < amountToFill:
-            # Hvis bruger trykker på pil op
-            if input().lower() == "up":
-                actualAmount += 50
+            # Hvis bruger skriver "up" så fyldes der x ml i glasset
+            if input().lower() == FILL_CUE:
+                actualAmount += FILL_INCREMENT
                 print(f"{actualAmount} ml {keys[i]} i glasset")
 
         i +=1
